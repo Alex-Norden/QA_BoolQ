@@ -175,11 +175,14 @@ def test(model, iterator, to_print=False):
 	return test_loss, test_acc, test_f1
 
 
-# def run_model(model_name, batch_size=32, max_length=256, n_epochs=3, lr=1e-5, clip=1, use_segment_ids=True):
-def run_model(model_name, batch_size=32, max_length=256, n_epochs=1, lr=1e-5, clip=1, use_segment_ids=True):
+def run_model(model_name, batch_size=32, max_length=256, n_epochs=3, lr=1e-5, clip=1, use_segment_ids=True, load_state=False):
 	# load pretrained model/tokenizer
 	tokenizer = AutoTokenizer.from_pretrained(model_name)
 	model = AutoModelForSequenceClassification.from_pretrained(model_name).to(DEVICE)
+
+	if load_state:
+		print("loading state...")
+		model.load_state_dict(torch.load(BEST_MODEL_PATH))
 
 	set_seed()
 
